@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="compute-service"/>
+
+    <!-- 注册中心服务地址 -->
+    <dubbo:registry id="zookeeper" protocol="zookeeper" address="${dubbo.registry.address}" />
+
+    <!-- 用dubbo协议在30001 -->
+    <dubbo:protocol name="dubbo" port="30001" />
+
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="pri.robin.demospingdubbo.provider.Service" ref="customerService"
+                   version="1.0" registry="zookeeper"/>
+
+    <!-- 具体服务接口的实现 -->
+    <bean id="customerService" class="pri.robin.demospingdubbo.provider.CustomerService" />
+
+    <!-- 引用ComputeService服务，这里应该是在consumer端进行配置-->
+    <!--<dubbo:reference id="cService" interface="pri.robin.demospingdubbo.provider.CustomerService"-->
+                     <!--check="false" version="1.0" url="" registry="zookeeper" protocol="dubbo" timeout="15000"/>-->
+</beans>
